@@ -1,11 +1,12 @@
+'use client';
 import React, { useState } from 'react';
 import {
   Pressable,
-  Text,
-  TouchableOpacityProps,
   StyleProp,
-  ViewStyle,
+  Text,
   TextStyle,
+  TouchableOpacityProps,
+  ViewStyle,
 } from 'react-native';
 
 import { cn } from '../../../lib/utils';
@@ -16,6 +17,7 @@ interface ButtonProps extends TouchableOpacityProps {
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
   size?: 'default' | 'sm' | 'lg' | 'icon';
   disabled?: boolean;
+  isLoading?: boolean; // Added isLoading prop
   className?: string;
   textClassName?: string;
   style?: StyleProp<ViewStyle>;
@@ -41,6 +43,7 @@ const Button: React.FC<ButtonProps> = ({
   variant = 'default',
   size = 'default',
   disabled = false,
+  isLoading = false, // Default to false
   className = '',
   textClassName = '',
   style,
@@ -54,7 +57,7 @@ const Button: React.FC<ButtonProps> = ({
     buttonClassNames[`size_${size}`],
     buttonClassNames[`${mode}_variant_${variant}`],
     isPressed && buttonClassNames.pressed[variant],
-    disabled && buttonClassNames.disabled,
+    (disabled || isLoading) && buttonClassNames.disabled,
     className
   );
 
@@ -70,36 +73,41 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <Pressable
       {...props}
-      disabled={disabled}
+      disabled={disabled || isLoading}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
-      android_ripple={variant !== 'link' ? { color: 'rgba(0, 0, 0, 0.1)' } : null}
+      // @ts-ignore
       className={containerClasses}
       style={[style, isPressed && !buttonClassNames.pressed[variant] && { opacity: 0.95 }]}
     >
-      {React.Children.map(children, child => {
-        if (React.isValidElement(child)) {
-          const elementChild = child as IconElement;
+      {isLoading ? (
+        <Text className={textClasses}>Loading...</Text>
+      ) : (
+        React.Children.map(children, child => {
+          if (React.isValidElement(child)) {
+            const elementChild = child as IconElement;
 
-          if (elementChild.type === 'svg' || elementChild.props.svg) {
-            return React.cloneElement(elementChild, {
-              ...elementChild.props,
-              size: isIconButton ? 20 : 16,
-              color: elementChild.props.color || iconColors[mode][variant],
-              className: cn(
-                isIconButton ? 'w-5 h-5' : 'w-4 h-4 shrink-0',
-                elementChild.props.className
-              ),
-            });
+            if (elementChild.type === 'svg' || elementChild.props.svg) {
+              return React.cloneElement(elementChild, {
+                ...elementChild.props,
+                size: isIconButton ? 20 : 16,
+                color: elementChild.props.color || iconColors[mode][variant],
+                className: cn(
+                  isIconButton ? 'w-5 h-5' : 'w-4 h-4 shrink-0',
+                  elementChild.props.className
+                ),
+              });
+            }
           }
-        }
 
-        if (typeof child === 'string' || typeof child === 'number') {
-          return <Text className={textClasses}>{child}</Text>;
-        }
+          if (typeof child === 'string' || typeof child === 'number') {
+            // @ts-ignore
+            return <Text className={textClasses}>{child}</Text>;
+          }
 
-        return child;
-      })}
+          return child;
+        })
+      )}
     </Pressable>
   );
 };

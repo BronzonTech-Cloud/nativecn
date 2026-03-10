@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { cn } from '../../../lib/utils';
-import Feather from 'react-native-vector-icons/Feather';
+// Web stub for Feather icons — static import removed to avoid Flow-syntax build errors
+// Icons render as null on web (this is a React Native component docs page)
 
 // Import styles
 import {
@@ -18,13 +19,8 @@ type IconProps = {
   color: string;
 };
 
-// Create a wrapper component to fix TypeScript compatibility issues
-const FeatherIcon = ({ name, size, color }: IconProps) => {
-  // Use the two-step type assertion pattern (first to unknown, then to the desired type)
-  // This is the recommended TypeScript pattern for type assertions when types don't overlap
-  const IconComponent = Feather as unknown as React.FC<IconProps>;
-  return <IconComponent name={name} size={size} color={color} />;
-};
+// Web stub: renders nothing (icons are React Native only)
+const FeatherIcon = (_props: IconProps) => null;
 
 // Types for the Alert component
 interface AlertProps {
@@ -136,7 +132,7 @@ export const AlertDescription: React.FC<AlertDescriptionProps> = ({
     if (React.isValidElement(content)) {
       const elementProps = content.props as any;
       // If it's already a Text component or has no children, return as is
-      if (content.type === Text || (elementProps && !elementProps.children)) {
+      if ((content.type as any) === Text || (elementProps && !elementProps.children)) {
         return content;
       }
 

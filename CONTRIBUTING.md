@@ -115,7 +115,6 @@ npm run test
 We follow a test-first approach for component development:
 
 1. **Test in Example Apps First**: Before adding a new component to the library, you should first implement and test it in our example applications:
-
    - Expo Example App: `/examples/expo/nativecn`
    - React Native CLI Example App: _(coming soon)_
 
@@ -128,7 +127,6 @@ We follow a test-first approach for component development:
 To add a new component:
 
 1. Add component template files in `packages/cli/templates/<component-name>/`:
-
    - `index.tsx.template`: Component template
    - `styles.ts.template`: Styles template
 

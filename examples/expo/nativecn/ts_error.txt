@@ -1,0 +1,17 @@
+components/ui/breadcrumb/index.tsx(100,11): error TS18046: 'children.props' is of type 'unknown'.
+components/ui/breadcrumb/index.tsx(101,34): error TS18046: 'children.props' is of type 'unknown'.
+components/ui/carousel/index.tsx(194,5): error TS2322: Type 'RefObject<ScrollView | null>' is not assignable to type 'RefObject<ScrollView>'.
+  Type 'ScrollView | null' is not assignable to type 'ScrollView'.
+    Type 'null' is not assignable to type 'ScrollView'.
+components/ui/checkbox/index.tsx(5,30): error TS2307: Cannot find module '../hooks/use-pressable' or its corresponding type declarations.
+components/ui/input-otp/index.tsx(751,23): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextInputProps): TextInput', gave the following error.
+    Type '(ref: TextInput | null) => TextInput | null' is not assignable to type 'Ref<TextInput> | undefined'.
+      Type '(ref: TextInput | null) => TextInput | null' is not assignable to type '(instance: TextInput | null) => void | (() => VoidOrUndefinedOnly)'.
+        Type 'TextInput | null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
+          Type 'null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
+  Overload 2 of 2, '(props: TextInputProps, context: any): TextInput', gave the following error.
+    Type '(ref: TextInput | null) => TextInput | null' is not assignable to type 'Ref<TextInput> | undefined'.
+      Type '(ref: TextInput | null) => TextInput | null' is not assignable to type '(instance: TextInput | null) => void | (() => VoidOrUndefinedOnly)'.
+        Type 'TextInput | null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
+          Type 'null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.

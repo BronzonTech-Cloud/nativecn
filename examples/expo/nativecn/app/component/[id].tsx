@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import { useTheme } from '../../lib/ThemeContext';
 import Header from '../components/Header';
@@ -19,6 +20,12 @@ import CarouselShowcase from './showcases/CarouselShowcase';
 import OTPInputShowCase from './showcases/InputOtpShowCase';
 import SkeletonShowcase from './showcases/SkeletonShowcase';
 
+import InputShowcase from './showcases/InputShowcase';
+import CheckboxShowcase from './showcases/CheckboxShowcase';
+import SwitchShowcase from './showcases/SwitchShowcase';
+import RadioGroupShowcase from './showcases/RadioGroupShowcase';
+import SeparatorShowcase from './showcases/SeparatorShowcase';
+
 // Component mapping for dynamic rendering
 const COMPONENT_SHOWCASES: Record<string, React.ComponentType> = {
   accordion: AccordionShowcase,
@@ -33,6 +40,11 @@ const COMPONENT_SHOWCASES: Record<string, React.ComponentType> = {
   carousel: CarouselShowcase,
   OTPInput: OTPInputShowCase,
   Skeleton: SkeletonShowcase,
+  input: InputShowcase,
+  checkbox: CheckboxShowcase,
+  switch: SwitchShowcase,
+  'radio-group': RadioGroupShowcase,
+  separator: SeparatorShowcase,
 };
 
 export default function ComponentDetails() {

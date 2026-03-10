@@ -163,9 +163,9 @@ export const OTPInput = forwardRef<OTPInputRef, OTPInputProps>(
 
     // Refs
     const inputRefs = useRef<(TextInput | null)[]>([]);
-    const timerRef = useRef<NodeJS.Timeout | null>(null);
-    const expiryTimerRef = useRef<NodeJS.Timeout | null>(null);
-    const resendTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const expiryTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const resendTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const isRTL = I18nManager.isRTL;
 
     // Calculate the middle point for separator
@@ -735,7 +735,7 @@ export const OTPInput = forwardRef<OTPInputRef, OTPInputProps>(
         accessible={true}
         accessibilityLabel={ariaLabel}
         accessibilityHint="Enter your verification code"
-        accessibilityRole={'group' as AccessibilityRole}
+        accessibilityRole="none"
         accessibilityState={{ disabled }}
       >
         {/* OTP Input Row */}
@@ -748,7 +748,9 @@ export const OTPInput = forwardRef<OTPInputRef, OTPInputProps>(
                 <Pressable onPress={() => handleTap(displayIndex)}>
                   <Animated.View style={getAnimationStyle(displayIndex)}>
                     <TextInput
-                      ref={ref => (inputRefs.current[displayIndex] = ref)}
+                      ref={ref => {
+                        inputRefs.current[displayIndex] = ref;
+                      }}
                       className={getInputStyle(displayIndex)}
                       value={
                         mask && localValue[displayIndex] ? '•' : localValue[displayIndex] || ''

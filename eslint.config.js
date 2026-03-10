@@ -1,9 +1,17 @@
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
 import tseslint from 'typescript-eslint';
 import eslintPluginPrettier from 'eslint-plugin-prettier';
 import eslintPluginImport from 'eslint-plugin-import';
 import eslintPluginUnusedImports from 'eslint-plugin-unused-imports';
 import eslintPluginEslintComments from 'eslint-plugin-eslint-comments';
-import prettierConfig from './.prettierrc.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const prettierConfig = JSON.parse(readFileSync(path.join(__dirname, '.prettierrc.json'), 'utf8'));
 
 export default [
   {

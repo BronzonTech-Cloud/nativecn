@@ -1,3 +1,4 @@
+'use client';
 import React, { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import {
   View,
@@ -9,7 +10,7 @@ import {
   Pressable,
   Text,
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+// react-native-vector-icons/Feather removed — web stub below
 import { cn } from '../../../lib/utils';
 
 import {
@@ -26,13 +27,8 @@ type IconProps = {
   color: string;
 };
 
-// Create a wrapper component to fix TypeScript compatibility issues
-const FeatherIcon = ({ name, size, color }: IconProps) => {
-  // Use the two-step type assertion pattern (first to unknown, then to the desired type)
-  // This is the recommended TypeScript pattern for type assertions when types don't overlap
-  const IconComponent = Feather as unknown as React.FC<IconProps>;
-  return <IconComponent name={name} size={size} color={color} />;
-};
+// Web stub: renders nothing (icons are React Native only)
+const FeatherIcon = (_props: IconProps) => null;
 
 // Define types
 type CarouselContextProps = {
@@ -209,7 +205,11 @@ const Carousel = ({
   return (
     <CarouselContext.Provider value={contextValue}>
       <View
-        className={cn(carouselClassNames.base, className)}
+        className={cn(
+          carouselClassNames.base,
+          orientation === 'vertical' ? 'h-full' : '',
+          className
+        )}
         accessible
         accessibilityRole="none"
         accessibilityLabel="carousel"
@@ -218,7 +218,6 @@ const Carousel = ({
       >
         {React.Children.map(children, child => {
           if (React.isValidElement(child)) {
-            // Use a safer way to check for CarouselContent
             const childType = child.type as any;
             const isCarouselContent =
               childType === CarouselContent || (childType && childType.name === 'CarouselContent');
@@ -263,6 +262,7 @@ const CarouselContent = ({
     <View
       className={cn(
         carouselContentClassNames.base,
+        orientation === 'vertical' ? 'h-[200px]' : '',
         orientation === 'vertical' ? carouselContentClassNames.vertical : ''
       )}
     >
@@ -283,7 +283,8 @@ const CarouselContent = ({
         )}
         contentContainerStyle={{
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: orientation === 'vertical' ? 'flex-start' : 'center',
+          height: orientation === 'vertical' ? '100%' : undefined,
         }}
         {...props}
       >
@@ -308,7 +309,8 @@ const CarouselItem = ({ className, children, ...props }: CarouselItemProps) => {
       className={cn(carouselItemClassNames.base, className)}
       style={{
         width: orientation === 'horizontal' ? viewportWidth : '100%',
-        height: orientation === 'vertical' ? viewportHeight : undefined,
+        height: orientation === 'vertical' ? viewportHeight : 'auto',
+        flex: orientation === 'vertical' ? 1 : undefined,
       }}
       {...props}
     >

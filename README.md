@@ -60,12 +60,12 @@ Creates a nativecn-preset.js file with default theme colors.
 
 | Category                      | Progress                 | Completed | Total  |
 | ----------------------------- | ------------------------ | --------- | ------ |
-| Essential UI Primitives       | ⬛⬜⬜⬜⬜⬜⬜⬜⬜⬜     | 1         | 10     |
+| Essential UI Primitives       | ⬛⬛⬛⬛⬛⬛⬛⬜⬜⬜     | 7         | 10     |
 | Common Components             | ⬛⬛⬛⬛⬛⬛⬜⬜⬜⬜⬜⬜ | 6         | 12     |
 | Navigation & Structure        | ⬛⬛⬜⬜⬜⬜⬜⬜         | 2         | 8      |
 | Advanced Interaction          | ⬛⬜⬜⬜⬜⬜⬜⬜⬜⬜     | 1         | 10     |
 | Data & Specialized Components | ⬛⬛⬜⬜⬜⬜             | 2         | 6      |
-| **Overall**                   | ⬛⬛⬜⬜⬜⬜⬜⬜⬜⬜     | **12**    | **46** |
+| **Overall**                   | ⬛⬛⬛⬛⬜⬜⬜⬜⬜⬜     | **18**    | **46** |
 
 Check out the [Roadmap](ROADMAP.md) for more details.
 

@@ -1,3 +1,4 @@
+'use client';
 import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
 import {
   Modal,
@@ -28,7 +29,7 @@ import {
 } from './styles';
 
 // Import Button component
-import Button from '../button';
+import Button from '../button/index';
 
 // Types
 type AlertDialogContextValue = {
@@ -135,7 +136,22 @@ export const AlertDialogContent: React.FC<AlertDialogContentProps> = ({
   const contentRef = useRef<View>(null);
 
   useEffect(() => {
-    if (!open) {
+    if (open) {
+      // Start animations when dialog opens
+      setIsReady(true);
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: animationConfigs.fade.duration,
+          useNativeDriver: animationConfigs.fade.useNativeDriver,
+        }),
+        Animated.timing(scaleAnim, {
+          toValue: animationConfigs.scale.outputRange[1],
+          duration: animationConfigs.scale.duration,
+          useNativeDriver: animationConfigs.scale.useNativeDriver,
+        }),
+      ]).start();
+    } else {
       // Reset the ready state when dialog closes
       setIsReady(false);
 
@@ -154,24 +170,11 @@ export const AlertDialogContent: React.FC<AlertDialogContentProps> = ({
     }
   }, [open]);
 
-  // Handle animation after layout is measured
+  // Modified handleLayout function
   const handleLayout = (event: LayoutChangeEvent) => {
+    // We still want to capture layout, but no longer conditional on animation
     if (!isReady && open) {
       setIsReady(true);
-
-      // Start animations immediately after layout is measured
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: animationConfigs.fade.duration,
-          useNativeDriver: animationConfigs.fade.useNativeDriver,
-        }),
-        Animated.timing(scaleAnim, {
-          toValue: animationConfigs.scale.outputRange[1],
-          duration: animationConfigs.scale.duration,
-          useNativeDriver: animationConfigs.scale.useNativeDriver,
-        }),
-      ]).start();
     }
   };
 
@@ -212,6 +215,11 @@ export const AlertDialogContent: React.FC<AlertDialogContentProps> = ({
             maxWidth: 450,
             opacity: fadeAnim,
             transform: [{ scale: scaleAnim }],
+            backgroundColor: isDark ? '#1c1c1c' : '#ffffff',
+            borderWidth: 1,
+            borderColor: isDark ? '#2d2d2d' : '#e4e4e7',
+            borderRadius: 8,
+            padding: 24,
             // Use StyleSheet for consistent rendering
             ...StyleSheet.flatten({
               shadowColor: '#000',
@@ -255,7 +263,7 @@ export const AlertDialogFooter: React.FC<AlertDialogFooterProps> = ({
   // For small screens, column-reverse like in original component
   // For larger screens, we'll use row and justify-end
   const { width } = Dimensions.get('window');
-  const isSmallScreen = width < 640; // Equivalent to tailwind sm breakpoint
+  const isSmallScreen = true; // Equivalent to tailwind sm breakpoint
 
   return (
     <View
@@ -328,7 +336,7 @@ export const AlertDialogDescription: React.FC<AlertDialogDescriptionProps> = ({
     if (React.isValidElement(content)) {
       const elementProps = content.props as any;
       // If it's already a Text component or has no children, return as is
-      if (content.type === Text || (elementProps && !elementProps.children)) {
+      if ((content.type as any)?.name === 'Text' || (elementProps && !elementProps.children)) {
         return content;
       }
 
@@ -414,7 +422,7 @@ export const AlertDialogCancel: React.FC<AlertDialogCancelProps> = ({
 }) => {
   const { setOpen, mode } = useAlertDialog();
   const { width } = Dimensions.get('window');
-  const isSmallScreen = width < 640;
+  const isSmallScreen = true;
 
   const handlePress = () => {
     if (onPress) {
@@ -425,7 +433,7 @@ export const AlertDialogCancel: React.FC<AlertDialogCancelProps> = ({
 
   return (
     <Button
-      variant={variant}
+      variant={variant || 'outline'}
       mode={mode}
       className={cn(
         isSmallScreen ? alertDialogCancelClassNames.smallScreen : '',

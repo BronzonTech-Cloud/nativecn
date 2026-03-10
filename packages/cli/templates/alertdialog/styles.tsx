@@ -1,5 +1,3 @@
-import { Easing } from 'react-native';
-
 // AlertDialog styling
 export const alertDialogClassNames = {
   base: '',

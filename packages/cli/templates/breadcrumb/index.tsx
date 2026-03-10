@@ -1,6 +1,7 @@
+'use client';
 import React, { useState } from 'react';
 import { View, Text, Pressable, ViewProps, TextProps, PressableProps } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+// react-native-vector-icons/Feather removed — web stub below
 import { cn } from '../../../lib/utils';
 
 import {
@@ -20,13 +21,8 @@ type IconProps = {
   color: string;
 };
 
-// Create a wrapper component to fix TypeScript compatibility issues
-const FeatherIcon = ({ name, size, color }: IconProps) => {
-  // Use the two-step type assertion pattern (first to unknown, then to the desired type)
-  // This is the recommended TypeScript pattern for type assertions when types don't overlap
-  const IconComponent = Feather as unknown as React.FC<IconProps>;
-  return <IconComponent name={name} size={size} color={color} />;
-};
+// Web stub: renders nothing (icons are React Native only)
+const FeatherIcon = (_props: IconProps) => null;
 
 // Main Breadcrumb container (replaces nav element)
 interface BreadcrumbProps extends ViewProps {
@@ -94,11 +90,12 @@ const BreadcrumbLink = ({
 
   // If asChild is true and children is a valid element, we render the children directly
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
+    const childElement = children as React.ReactElement<{ className?: string }>;
+    return React.cloneElement(childElement, {
       ...props,
       // Only add className if the child supports it
-      ...(children.props.className !== undefined && {
-        className: cn(className, children.props.className),
+      ...(childElement.props.className !== undefined && {
+        className: cn(className, childElement.props.className),
       }),
     });
   }

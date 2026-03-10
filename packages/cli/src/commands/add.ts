@@ -1,7 +1,7 @@
 import path from 'path';
 
 import chalk from 'chalk';
-import execa from 'execa';
+import { execa } from 'execa';
 import fs from 'fs-extra';
 
 import { readConfig } from '../utils/config';
@@ -17,6 +17,18 @@ const componentDependencies: Record<string, { deps: string[]; devDeps: string[] 
   alert: {
     deps: ['react-native-vector-icons'],
     devDeps: ['@types/react-native-vector-icons'],
+  },
+  checkbox: {
+    deps: ['react-native-vector-icons'],
+    devDeps: ['@types/react-native-vector-icons'],
+  },
+  switch: {
+    deps: ['react-native-reanimated'],
+    devDeps: [],
+  },
+  'radio-group': {
+    deps: ['react-native-reanimated'],
+    devDeps: [],
   },
 };
 

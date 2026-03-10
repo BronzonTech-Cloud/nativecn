@@ -1,8 +1,8 @@
 // NativeWind compatible style object
 export const styles = {
   // Container styles
-  container: 'flex-row items-center justify-center',
-  containerDark: 'bg-dark-background',
+  container: 'flex-row items-center justify-center overflow-hidden',
+  containerDark: 'bg-black',
 
   // Separator styles
   separator: 'mx-2 text-gray-400',

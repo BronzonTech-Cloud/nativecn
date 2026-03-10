@@ -14,23 +14,23 @@ NativeCN is in early development with a foundation of core components and infras
 
 | Category                      | Progress                 | Completed | Total  |
 | ----------------------------- | ------------------------ | --------- | ------ |
-| Essential UI Primitives       | ⬛⬜⬜⬜⬜⬜⬜⬜⬜⬜     | 1         | 10     |
+| Essential UI Primitives       | ⬛⬛⬛⬛⬛⬛⬛⬜⬜⬜     | 7         | 10     |
 | Common Components             | ⬛⬛⬛⬛⬛⬛⬜⬜⬜⬜⬜⬜ | 6         | 12     |
 | Navigation & Structure        | ⬛⬛⬜⬜⬜⬜⬜⬜         | 2         | 8      |
 | Advanced Interaction          | ⬛⬜⬜⬜⬜⬜⬜⬜⬜⬜     | 1         | 10     |
 | Data & Specialized Components | ⬛⬛⬜⬜⬜⬜             | 2         | 6      |
-| **Overall**                   | ⬛⬛⬜⬜⬜⬜⬜⬜⬜⬜     | **12**    | **46** |
+| **Overall**                   | ⬛⬛⬛⬛⬜⬜⬜⬜⬜⬜     | **18**    | **46** |
 
 #### Essential UI Primitives
 
 - [x] [Button component](https://github.com/tailwiinder/nativecn/tree/main/packages/cli/templates/button)
-- [ ] Checkbox component
-- [ ] Input component
-- [ ] Label component
-- [ ] Radio Group component
+- [x] [Checkbox component](https://github.com/tailwiinder/nativecn/tree/main/packages/cli/templates/checkbox)
+- [x] [Input component](https://github.com/tailwiinder/nativecn/tree/main/packages/cli/templates/input)
+- [x] [Label component](https://github.com/tailwiinder/nativecn/tree/main/packages/cli/templates/label)
+- [x] [Radio Group component](https://github.com/tailwiinder/nativecn/tree/main/packages/cli/templates/radio-group)
 - [ ] Select component
-- [ ] Separator component
-- [ ] Switch component
+- [x] [Separator component](https://github.com/tailwiinder/nativecn/tree/main/packages/cli/templates/separator)
+- [x] [Switch component](https://github.com/tailwiinder/nativecn/tree/main/packages/cli/templates/switch)
 - [ ] Textarea component
 - [ ] Tooltip component
 

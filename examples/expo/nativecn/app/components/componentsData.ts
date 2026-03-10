@@ -102,6 +102,42 @@ const componentsData: ComponentInfo[] = [
     icon: 'loader',
     category: 'Layout',
   },
+  {
+    id: 'input',
+    name: 'Input & Label',
+    description: 'Displays a form input field or a component that looks like an input field.',
+    icon: 'type',
+    category: 'Input',
+  },
+  {
+    id: 'checkbox',
+    name: 'Checkbox',
+    description: 'A control that allows the user to toggle between checked and not checked.',
+    icon: 'check-square',
+    category: 'Input',
+  },
+  {
+    id: 'switch',
+    name: 'Switch',
+    description: 'A control that allows the user to toggle between checked and not checked.',
+    icon: 'toggle-right',
+    category: 'Input',
+  },
+  {
+    id: 'radio-group',
+    name: 'Radio Group',
+    description:
+      'A set of checkable buttons—known as radio buttons—where no more than one of the buttons can be checked at a time.',
+    icon: 'target',
+    category: 'Input',
+  },
+  {
+    id: 'separator',
+    name: 'Separator',
+    description: 'Visually or semantically separates content.',
+    icon: 'minus',
+    category: 'Layout',
+  },
   // Future components can be added here
 ];
 

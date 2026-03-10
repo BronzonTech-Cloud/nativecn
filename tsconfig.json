@@ -20,12 +20,6 @@
       "*": ["*", "lib/*"]
     }
   },
-  "include": [
-    "lib/**/*",
-    "packages/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
-} 
+  "include": ["lib/**/*", "packages/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

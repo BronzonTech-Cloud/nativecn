@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, ViewProps, TextProps, PressableProps } from 'react-native';
+// @ts-ignore
 import Feather from 'react-native-vector-icons/Feather';
 import { cn } from '../../../lib/utils';
 
@@ -97,8 +98,8 @@ const BreadcrumbLink = ({
     return React.cloneElement(children, {
       ...props,
       // Only add className if the child supports it
-      ...(children.props.className !== undefined && {
-        className: cn(className, children.props.className),
+      ...((children.props as any).className !== undefined && {
+        className: cn(className, (children.props as any).className),
       }),
     });
   }

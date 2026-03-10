@@ -6,7 +6,7 @@ export const skeletonColors = {
   },
   dark: {
     base: '#1E1E1E',
-    highlight: '#18181A',
+    highlight: '#2A2A2A',
   },
 };
 

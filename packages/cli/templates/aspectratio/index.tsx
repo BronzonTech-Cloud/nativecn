@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { View, LayoutChangeEvent } from 'react-native';
 import { cn } from '../../../lib/utils';

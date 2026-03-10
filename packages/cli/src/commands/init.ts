@@ -1,7 +1,7 @@
 import path from 'path';
 
 import chalk from 'chalk';
-import execa from 'execa';
+import { execa } from 'execa';
 import fs from 'fs-extra';
 import prompts from 'prompts';
 
@@ -320,7 +320,13 @@ async function installEssentialDependencies() {
   const dependencies = ['clsx', 'tailwind-merge', 'react-native-vector-icons'];
 
   // Dev dependencies
-  const devDependencies = ['@types/react-native-vector-icons'];
+  const devDependencies = [
+    '@types/react-native-vector-icons',
+    '@testing-library/react-native',
+    '@types/jest',
+    'jest',
+    'react-test-renderer',
+  ];
 
   // Detect package manager
   const packageManager = await detectPackageManager();
@@ -378,12 +384,14 @@ async function detectPackageManager() {
 async function createUtilityFiles() {
   const cwd = process.cwd();
 
-  // Create utils directory if it doesn't exist
-  const utilsDir = path.join(cwd, 'lib');
-  await fs.ensureDir(utilsDir);
+  // Create lib directory if it doesn't exist
+  const libDir = path.join(cwd, 'lib');
+  const hooksDir = path.join(cwd, 'hooks');
+  await fs.ensureDir(libDir);
+  await fs.ensureDir(hooksDir);
 
   // Create cn.ts utility if it doesn't exist
-  const cnPath = path.join(utilsDir, 'utils.ts');
+  const cnPath = path.join(libDir, 'utils.ts');
   if (!(await fs.pathExists(cnPath))) {
     const cnContent = `import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -401,6 +409,16 @@ export function cn(...inputs: ClassValue[]) {
     console.log(chalk.green('✓'), 'Created utility functions in lib/utils.ts');
   } else {
     console.log(chalk.blue('i'), 'lib/utils.ts already exists, skipping');
+  }
+
+  // Create hooks/use-pressable.ts if it doesn't exist
+  const usePressablePath = path.join(hooksDir, 'use-pressable.ts');
+  if (!(await fs.pathExists(usePressablePath))) {
+    const hookTemplatePath = path.resolve(__dirname, '../../templates/hooks/use-pressable.ts');
+    if (await fs.pathExists(hookTemplatePath)) {
+      await fs.copyFile(hookTemplatePath, usePressablePath);
+      console.log(chalk.green('✓'), 'Created shared hook in hooks/use-pressable.ts');
+    }
   }
 }
 

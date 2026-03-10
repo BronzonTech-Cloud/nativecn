@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Image, ImageSourcePropType, Text, StyleProp, ViewStyle } from 'react-native';
 
@@ -12,9 +13,16 @@ interface AvatarProps {
   children?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   size?: 'sm' | 'md' | 'lg'; // predefined sizes
+  mode?: 'light' | 'dark'; // Added mode prop
 }
 
-const Avatar: React.FC<AvatarProps> = ({ className = '', children, style, size = 'md' }) => {
+const Avatar: React.FC<AvatarProps> = ({
+  className = '',
+  children,
+  style,
+  size = 'md',
+  mode = 'light',
+}) => {
   // Process children to ensure text is wrapped
   const renderChildren = () => {
     if (children == null) {
@@ -63,7 +71,12 @@ const Avatar: React.FC<AvatarProps> = ({ className = '', children, style, size =
   return (
     <View
       style={style}
-      className={cn(avatarClassNames.base, avatarClassNames.size[size], className)}
+      className={cn(
+        avatarClassNames.base,
+        avatarClassNames.size[size],
+        mode === 'dark' ? 'bg-dark-muted' : 'bg-muted',
+        className
+      )}
     >
       {safeRender()}
     </View>
@@ -79,6 +92,7 @@ interface AvatarImageProps {
   alt?: string;
   onLoadingStatusChange?: (isLoading: boolean) => void;
   onError?: () => void;
+  mode?: 'light' | 'dark'; // Added mode prop
 }
 
 const AvatarImage: React.FC<AvatarImageProps> = ({
@@ -87,6 +101,7 @@ const AvatarImage: React.FC<AvatarImageProps> = ({
   alt,
   onLoadingStatusChange,
   onError,
+  mode = 'light',
 }) => {
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -199,6 +214,7 @@ interface AvatarFallbackProps {
   isImageLoading?: boolean;
   hasImageError?: boolean; // New prop to track image errors
   standalone?: boolean; // New prop to indicate this fallback is used without an image
+  mode?: 'light' | 'dark'; // Added mode prop
 }
 
 const AvatarFallback: React.FC<AvatarFallbackProps> = ({
@@ -208,6 +224,7 @@ const AvatarFallback: React.FC<AvatarFallbackProps> = ({
   isImageLoading = false,
   hasImageError = false,
   standalone = false, // Default to false
+  mode = 'light',
 }) => {
   const [shouldShow, setShouldShow] = useState(delayMs === 0);
   const isLoadingRef = useRef(isImageLoading);
@@ -291,7 +308,17 @@ const AvatarFallback: React.FC<AvatarFallbackProps> = ({
     }
   };
 
-  return <View className={cn(avatarFallbackClassNames.base, className)}>{safeRender()}</View>;
+  return (
+    <View
+      className={cn(
+        avatarFallbackClassNames.base,
+        mode === 'dark' ? 'bg-dark-muted' : 'bg-muted',
+        className
+      )}
+    >
+      {safeRender()}
+    </View>
+  );
 };
 
 export { Avatar, AvatarImage, AvatarFallback };

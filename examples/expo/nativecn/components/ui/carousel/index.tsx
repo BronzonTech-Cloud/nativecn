@@ -9,6 +9,7 @@ import {
   Pressable,
   Text,
 } from 'react-native';
+// @ts-ignore
 import Feather from 'react-native-vector-icons/Feather';
 import { cn } from '../../../lib/utils';
 
@@ -36,7 +37,7 @@ const FeatherIcon = ({ name, size, color }: IconProps) => {
 
 // Define types
 type CarouselContextProps = {
-  scrollRef: React.RefObject<ScrollView>;
+  scrollRef: React.RefObject<ScrollView | null>;
   currentIndex: number;
   scrollTo: (index: number) => void;
   scrollPrev: () => void;
@@ -267,7 +268,7 @@ const CarouselContent = ({
       )}
     >
       <ScrollView
-        ref={scrollRef}
+        ref={scrollRef as any}
         horizontal={orientation === 'horizontal'}
         pagingEnabled
         showsHorizontalScrollIndicator={false}

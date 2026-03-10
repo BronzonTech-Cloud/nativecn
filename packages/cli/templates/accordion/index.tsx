@@ -1,3 +1,4 @@
+'use client';
 import React, { createContext, useContext, useRef, useState } from 'react';
 import { Animated, Pressable, Text, View } from 'react-native';
 import { cn } from '../../../lib/utils';
@@ -249,7 +250,7 @@ export const AccordionTrigger: React.FC<AccordionTriggerProps> = ({
       const elementContent = content as React.ReactElement<any>;
       // If it's already a Text component or has no children, return as is
       if (
-        elementContent.type === Text ||
+        (elementContent.type as any) === Text ||
         (elementContent.props && !elementContent.props.children)
       ) {
         return content;
@@ -309,34 +310,6 @@ export const AccordionContent: React.FC<AccordionContentProps> = ({
 
   const heightAnim = useRef(new Animated.Value(0)).current;
   const [contentHeight, setContentHeight] = useState(0);
-  const contentRef = useRef<View>(null);
-
-  React.useEffect(() => {
-    if (contentRef.current && contentHeight === 0) {
-      contentRef.current.measure((x, y, width, height) => {
-        setContentHeight(height);
-      });
-    }
-  }, [contentRef.current]);
-
-  React.useEffect(() => {
-    Animated.timing(heightAnim, {
-      toValue: isOpen ? 1 : 0,
-      duration: animationConfigs.height.duration,
-      easing: animationConfigs.height.easing,
-      useNativeDriver: animationConfigs.height.useNativeDriver,
-    }).start();
-  }, [isOpen, contentHeight]);
-
-  const animatedHeight = heightAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, contentHeight || 0],
-  });
-
-  const animatedOpacity = heightAnim.interpolate({
-    inputRange: animationConfigs.opacity.inputRange,
-    outputRange: animationConfigs.opacity.outputRange,
-  });
 
   // Helper function to ensure all text is wrapped in Text components
   const renderContent = (content: React.ReactNode): React.ReactNode => {
@@ -360,7 +333,7 @@ export const AccordionContent: React.FC<AccordionContentProps> = ({
       const elementContent = content as React.ReactElement<any>;
       // If it's already a Text component or has no children, return as is
       if (
-        elementContent.type === Text ||
+        (elementContent.type as any) === Text ||
         (elementContent.props && !elementContent.props.children)
       ) {
         return content;
@@ -390,12 +363,40 @@ export const AccordionContent: React.FC<AccordionContentProps> = ({
     return content;
   };
 
-  if (contentHeight === 0) {
-    // Measure content height first (hidden)
+  React.useEffect(() => {
+    Animated.timing(heightAnim, {
+      toValue: isOpen ? 1 : 0,
+      duration: animationConfigs.height.duration,
+      easing: animationConfigs.height.easing,
+      useNativeDriver: animationConfigs.height.useNativeDriver,
+    }).start();
+  }, [isOpen, contentHeight]);
+
+  const animatedHeight = heightAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, contentHeight],
+  });
+
+  const animatedOpacity = heightAnim.interpolate({
+    inputRange: animationConfigs.opacity.inputRange,
+    outputRange: animationConfigs.opacity.outputRange,
+  });
+
+  const handleLayout = event => {
+    const { height } = event.nativeEvent.layout;
+    if (height > 0 && height !== contentHeight) {
+      setContentHeight(height);
+    }
+  };
+
+  // We use a simple hidden content renderer that measures its own height with onLayout
+  if (!isOpen && contentHeight === 0) {
     return (
-      <View style={{ position: 'absolute', opacity: 0 }} ref={contentRef}>
-        <View className={cn(accordionContentClassNames.content.base, contentClassName)}>
-          {renderContent(children)}
+      <View style={{ height: 0, overflow: 'hidden' }}>
+        <View onLayout={handleLayout}>
+          <View className={cn(accordionContentClassNames.content.base, contentClassName)}>
+            {renderContent(children)}
+          </View>
         </View>
       </View>
     );
@@ -410,7 +411,10 @@ export const AccordionContent: React.FC<AccordionContentProps> = ({
       }}
       className={cn(accordionContentClassNames.base, className)}
     >
-      <View className={cn(accordionContentClassNames.content.base, contentClassName)}>
+      <View
+        className={cn(accordionContentClassNames.content.base, contentClassName)}
+        onLayout={isOpen ? handleLayout : undefined}
+      >
         {renderContent(children)}
       </View>
     </Animated.View>

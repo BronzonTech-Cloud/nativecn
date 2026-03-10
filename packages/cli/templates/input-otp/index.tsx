@@ -1,3 +1,4 @@
+'use client';
 import React, { useRef, useState, useEffect, useCallback, forwardRef, useMemo } from 'react';
 import {
   TextInput,
@@ -15,7 +16,7 @@ import {
   AccessibilityRole,
 } from 'react-native';
 import { styles } from './styles';
-import Button from '../button';
+import Button from '../button/index';
 
 export interface OTPInputProps {
   // Core functionality
@@ -72,6 +73,14 @@ export interface OTPInputProps {
   onBlur?: () => void;
   onFocus?: () => void;
 }
+
+// Helper function to map our keyboard types to React Native's KeyboardTypeOptions
+const keyboardTypeMap: Record<string, TextInputProps['keyboardType']> = {
+  numeric: 'numeric',
+  default: 'default',
+  'email-address': 'email-address',
+  'phone-pad': 'phone-pad',
+};
 
 type OTPInputRef = {
   focus: () => void;
@@ -620,7 +629,7 @@ export const OTPInput = forwardRef<OTPInputRef, OTPInputProps>(
     // Expose methods through ref
     useEffect(() => {
       if (ref) {
-        (ref as React.MutableRefObject<OTPInputRef>).current = {
+        (ref as React.RefObject<OTPInputRef>).current = {
           focus: focusInput,
           blur: blurInputs,
           clear: clearInputs,
@@ -748,7 +757,11 @@ export const OTPInput = forwardRef<OTPInputRef, OTPInputProps>(
                 <Pressable onPress={() => handleTap(displayIndex)}>
                   <Animated.View style={getAnimationStyle(displayIndex)}>
                     <TextInput
-                      ref={ref => (inputRefs.current[displayIndex] = ref)}
+                      ref={ref => {
+                        if (ref) {
+                          inputRefs.current[displayIndex] = ref;
+                        }
+                      }}
                       className={getInputStyle(displayIndex)}
                       value={
                         mask && localValue[displayIndex] ? '•' : localValue[displayIndex] || ''
@@ -758,7 +771,7 @@ export const OTPInput = forwardRef<OTPInputRef, OTPInputProps>(
                       onFocus={() => handleFocus(displayIndex)}
                       onBlur={handleBlur}
                       maxLength={1}
-                      keyboardType={keyboard}
+                      keyboardType={keyboardTypeMap[keyboard]}
                       secureTextEntry={false}
                       editable={!disabled}
                       selectTextOnFocus={true}
@@ -795,7 +808,11 @@ export const OTPInput = forwardRef<OTPInputRef, OTPInputProps>(
 
                 {separator && displayIndex === midPoint - 1 && (
                   <View className={separatorStyle} accessibilityElementsHidden={true}>
-                    {typeof separator === 'boolean' ? <Text>—</Text> : separator}
+                    {typeof separator === 'boolean' ? (
+                      <Text className="text-gray-400">—</Text>
+                    ) : (
+                      separator
+                    )}
                   </View>
                 )}
               </React.Fragment>
